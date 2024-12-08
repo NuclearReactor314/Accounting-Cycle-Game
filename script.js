@@ -19,14 +19,14 @@ let currentSteps = [...correctSteps];
 let askedQuestions = new Set(); // 记录已经提问的块
 
 const questions = [
-  "What is the purpose of analyzing transactions in the accounting cycle, and what two documents are commonly reviewed during this step?",
+  "What is the purpose of analyzing transactions in the accounting cycle？",
   "When journalizing, what is the proper format for recording a transaction?",
-  "What is the primary purpose of posting transactions to the ledger, and how does it differ from journalizing?",
-  "What are the key components of a worksheet, and why is it important during the accounting cycle?",
-  "Name the three main financial statements prepared during this step, and explain the purpose of each.",
-  "Why are adjusting entries necessary, and how do they differ from closing entries?",
-  "What is the significance of posting adjusting and closing entries to the ledger? How does it affect the trial balance?",
-  "What is the primary purpose of the post-closing trial balance, and which accounts should be included in it?"
+  "What is the primary purpose of posting transactions to the ledger?",
+  "What are the key components of a worksheet?",
+  "Name the three main financial statements prepared during this step。",
+  "Why are adjusting entries necessary?",
+  "What is the significance of posting adjusting and closing entries to the ledger? ",
+  "What is the primary purpose of the post-closing trial balance?"
 ];
 
 // 创建并随机打乱方块
@@ -66,9 +66,9 @@ function askQuestion(index) {
 
     // 记录答案或简单反馈
     if (userAnswer !== null) {
-      alert(`You answered: "${userAnswer}". Great! Keep going!`);
+      alert(`You answered: "${userAnswer}".`);
     } else {
-      alert("No answer provided. Keep going!");
+      alert("No answer provided.");
     }
   }
 }
