@@ -2,7 +2,7 @@ const puzzleGrid = document.getElementById('puzzle-grid');
 const shuffleButton = document.getElementById('shuffle-button');
 const statusText = document.getElementById('status');
 
-// Steps of the Accounting Cycle
+// Steps and questions of the Accounting Cycle
 const steps = [
   "Analyze Transactions",
   "Journalize",
@@ -13,6 +13,17 @@ const steps = [
   "Post Adjusting & Closing Entries",
   "Prepare Post-Closing Trial Balance",
   ""
+];
+
+const questions = [
+  "What is the purpose of analyzing transactions in the accounting cycle, and what two documents are commonly reviewed during this step?",
+  "When journalizing, what is the proper format for recording a transaction?",
+  "What is the primary purpose of posting transactions to the ledger, and how does it differ from journalizing?",
+  "What are the key components of a worksheet, and why is it important during the accounting cycle?",
+  "Name the three main financial statements prepared during this step, and explain the purpose of each.",
+  "Why are adjusting entries necessary, and how do they differ from closing entries?",
+  "What is the significance of posting adjusting and closing entries to the ledger? How does it affect the trial balance?",
+  "What is the primary purpose of the post-closing trial balance, and which accounts should be included in it?"
 ];
 
 // Create and shuffle tiles
@@ -44,9 +55,23 @@ function checkWin() {
   }
 }
 
+function askQuestion(index) {
+  const question = questions[index];
+  if (question) {
+    setTimeout(() => {
+      alert(`Question: ${question}`);
+    }, 200);
+  }
+}
+
 function swapTiles(index1, index2) {
   [steps[index1], steps[index2]] = [steps[index2], steps[index1]];
   createTiles();
+  const blankIndex = steps.indexOf("");
+  const correctIndex = blankIndex; // The blank space moves, revealing the correct tile
+  if (steps[correctIndex] && steps[correctIndex] === steps[correctIndex]) {
+    askQuestion(correctIndex);
+  }
   checkWin();
 }
 
