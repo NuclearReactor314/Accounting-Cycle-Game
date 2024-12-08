@@ -2,8 +2,8 @@ const puzzleGrid = document.getElementById('puzzle-grid');
 const shuffleButton = document.getElementById('shuffle-button');
 const statusText = document.getElementById('status');
 
-// Steps and questions of the Accounting Cycle
-const steps = [
+// 正确的步骤和问题
+const correctSteps = [
   "Analyze Transactions",
   "Journalize",
   "Post",
@@ -14,6 +14,9 @@ const steps = [
   "Prepare Post-Closing Trial Balance",
   ""
 ];
+
+let currentSteps = [...correctSteps];
+let askedQuestions = new Set(); // 记录已经提问的块
 
 const questions = [
   "What is the purpose of analyzing transactions in the accounting cycle, and what two documents are commonly reviewed during this step?",
@@ -26,10 +29,10 @@ const questions = [
   "What is the primary purpose of the post-closing trial balance, and which accounts should be included in it?"
 ];
 
-// Create and shuffle tiles
+// 创建并随机打乱方块
 function createTiles() {
   puzzleGrid.innerHTML = '';
-  steps.forEach((step, index) => {
+  currentSteps.forEach((step, index) => {
     const tile = document.createElement('div');
     tile.className = 'tile';
     if (step === "") {
@@ -42,45 +45,51 @@ function createTiles() {
 }
 
 function shuffleTiles() {
-  steps.sort(() => Math.random() - 0.5);
+  currentSteps.sort(() => Math.random() - 0.5);
   createTiles();
+  askedQuestions.clear(); // 重置提问记录
   statusText.textContent = '';
 }
 
+// 检查是否获胜
 function checkWin() {
-  const currentOrder = Array.from(document.querySelectorAll('.tile'))
-    .map(tile => tile.textContent);
-  if (JSON.stringify(currentOrder) === JSON.stringify(steps)) {
+  if (JSON.stringify(currentSteps) === JSON.stringify(correctSteps)) {
     statusText.textContent = "Congratulations! You completed the puzzle!";
   }
 }
 
+// 提问机制
 function askQuestion(index) {
-  const question = questions[index];
-  if (question) {
+  if (!askedQuestions.has(index) && index < questions.length) {
+    askedQuestions.add(index); // 标记此块已经提问过
     setTimeout(() => {
-      alert(`Question: ${question}`);
+      alert(`Question: ${questions[index]}`);
     }, 200);
   }
 }
 
+// 交换方块并处理逻辑
 function swapTiles(index1, index2) {
-  [steps[index1], steps[index2]] = [steps[index2], steps[index1]];
+  [currentSteps[index1], currentSteps[index2]] = [currentSteps[index2], currentSteps[index1]];
   createTiles();
-  const blankIndex = steps.indexOf("");
-  const correctIndex = blankIndex; // The blank space moves, revealing the correct tile
-  if (steps[correctIndex] && steps[correctIndex] === steps[correctIndex]) {
-    askQuestion(correctIndex);
+
+  // 检查移动后的正确位置
+  if (currentSteps[index1] === correctSteps[index1]) {
+    askQuestion(index1);
   }
+  if (currentSteps[index2] === correctSteps[index2]) {
+    askQuestion(index2);
+  }
+
   checkWin();
 }
 
-// Handle tile clicks
+// 处理方块点击事件
 puzzleGrid.addEventListener('click', (e) => {
   const clickedTile = e.target;
   if (!clickedTile.classList.contains('tile')) return;
 
-  const blankIndex = steps.indexOf("");
+  const blankIndex = currentSteps.indexOf("");
   const clickedIndex = parseInt(clickedTile.dataset.index);
 
   const validMoves = [
@@ -95,8 +104,8 @@ puzzleGrid.addEventListener('click', (e) => {
   }
 });
 
-// Event Listeners
+// 添加事件监听器
 shuffleButton.addEventListener('click', shuffleTiles);
 
-// Initialize Game
+// 初始化游戏
 createTiles();
