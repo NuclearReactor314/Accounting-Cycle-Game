@@ -58,13 +58,18 @@ function checkWin() {
   }
 }
 
-// 提问机制
+// 提问机制（有答案输入）
 function askQuestion(index) {
   if (!askedQuestions.has(index) && index < questions.length) {
     askedQuestions.add(index); // 标记此块已经提问过
-    setTimeout(() => {
-      alert(`Question: ${questions[index]}`);
-    }, 200);
+    const userAnswer = prompt(`Question: ${questions[index]}\n\nYour Answer:`);
+
+    // 记录答案或简单反馈
+    if (userAnswer !== null) {
+      alert(`You answered: "${userAnswer}". Great! Keep going!`);
+    } else {
+      alert("No answer provided. Keep going!");
+    }
   }
 }
 
